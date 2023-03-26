@@ -6,6 +6,13 @@ public class Todo {
     private String description;
     private boolean isDone;
 
+    public Todo(Integer id, String title, String description, boolean isDone) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.isDone = isDone;
+    }
+
     public Integer getId() {
         return id;
     }

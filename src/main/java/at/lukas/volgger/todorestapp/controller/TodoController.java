@@ -8,9 +8,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class TodoController {
 
-    @GetMapping("/welcome")
-    public ResponseEntity<String> welcome(@RequestParam(value = "name") String name) {
-        return new ResponseEntity<>("Hello " + name + "!", HttpStatus.OK) ;
+    @GetMapping("/todo")
+    public ResponseEntity<Todo> getTodo(@RequestParam(value = "id") Integer id) {
+        Todo todo = new Todo(id, "Test tile", "Test description", false);
+
+        return new ResponseEntity<>(todo, HttpStatus.OK) ;
     }
 
     @PostMapping("/todo")
