@@ -17,6 +17,10 @@ public class Todo {
 
     private boolean isDone;
 
+    public Todo() {
+
+    }
+
     public Todo(Integer id, String title, String description, boolean isDone) {
         this.id = id;
         this.title = title;

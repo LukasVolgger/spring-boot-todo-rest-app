@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 public class TodoController {
 
@@ -15,9 +17,13 @@ public class TodoController {
 
     @GetMapping("/todo")
     public ResponseEntity<Todo> getTodo(@RequestParam(value = "id") Integer id) {
-        Todo todo = new Todo(id, "Test tile", "Test description", false);
+        Optional<Todo> todoOptional = todoRepository.findById(id);
 
-        return new ResponseEntity<>(todo, HttpStatus.OK) ;
+        if (todoOptional.isPresent()) {
+            return new ResponseEntity<>(todoOptional.get(), HttpStatus.OK) ;
+        } else {
+            return new ResponseEntity("Todo with id " + id + " not found!", HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping("/todo")
