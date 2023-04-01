@@ -33,12 +33,22 @@ public class TodoController {
         return new ResponseEntity<Iterable<Todo>>(allTodo, HttpStatus.OK);
     }
 
-
     @PostMapping("/todo")
     public ResponseEntity<Todo> createTodo(@RequestBody Todo newTodo) {
         todoRepository.save(newTodo);
 
         return new ResponseEntity<>(newTodo, HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/todo")
+    public ResponseEntity deleteTodo(@RequestParam(name = "id") int id) {
+        Optional<Todo> todo = todoRepository.findById(id);
+
+        if (todo.isPresent()) {
+            return new ResponseEntity<>("Todo with id " + id + " deleted!", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Todo with id " + id + " not found!", HttpStatus.NOT_FOUND);
+        }
     }
 
 }
