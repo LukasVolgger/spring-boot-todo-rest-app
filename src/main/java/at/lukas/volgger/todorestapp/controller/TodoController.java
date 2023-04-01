@@ -26,6 +26,14 @@ public class TodoController {
         }
     }
 
+    @GetMapping("todo/all")
+    public ResponseEntity<Iterable<Todo>> getAllTodo() {
+        Iterable<Todo> allTodo = todoRepository.findAll();
+
+        return new ResponseEntity<Iterable<Todo>>(allTodo, HttpStatus.OK);
+    }
+
+
     @PostMapping("/todo")
     public ResponseEntity<Todo> createTodo(@RequestBody Todo newTodo) {
         todoRepository.save(newTodo);
