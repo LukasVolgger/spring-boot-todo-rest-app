@@ -5,8 +5,11 @@ import jakarta.persistence.*;
 @Entity
 public class Todo {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @Column(nullable = false)
+    private Integer userId;
 
     @Column(nullable = false)
     private String title;
@@ -19,8 +22,9 @@ public class Todo {
 
     public Todo() {}
 
-    public Todo(Integer id, String title, String description, boolean isDone) {
+    public Todo(Integer id, Integer userId, String title, String description, boolean isDone) {
         this.id = id;
+        this.userId = userId;
         this.title = title;
         this.description = description;
         this.isDone = isDone;
@@ -32,6 +36,14 @@ public class Todo {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public String getTitle() {

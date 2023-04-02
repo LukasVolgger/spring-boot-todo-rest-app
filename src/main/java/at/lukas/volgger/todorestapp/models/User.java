@@ -2,10 +2,12 @@ package at.lukas.volgger.todorestapp.models;
 
 import jakarta.persistence.*;
 
+import java.util.Set;
+
 @Entity
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(unique = true, nullable = false)
@@ -14,12 +16,17 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @OneToMany
+    @JoinColumn(name = "userId")
+    Set<Todo> todos;
+
     public User() {}
 
-    public User(Integer id, String email, String password) {
+    public User(Integer id, String email, String password, Set<Todo> todos) {
         this.id = id;
         this.email = email;
         this.password = password;
+        this.todos = todos;
     }
 
     public Integer getId() {
@@ -44,5 +51,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Set<Todo> getTodos() {
+        return todos;
+    }
+
+    public void setTodos(Set<Todo> todos) {
+        this.todos = todos;
     }
 }
