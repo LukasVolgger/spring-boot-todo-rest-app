@@ -33,4 +33,12 @@ public class UserController {
         }
     }
 
+    @GetMapping("/user/validate")
+    public Boolean validateUser(@RequestParam(name = "email") String email,
+                                       @RequestParam(name = "password") String password) {
+        Optional<User> user = userRepository.findByEmailAndPassword(email, password);
+
+        return user.isPresent();
+    }
+
 }
