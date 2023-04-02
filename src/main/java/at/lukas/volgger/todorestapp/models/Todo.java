@@ -1,9 +1,6 @@
 package at.lukas.volgger.todorestapp.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Todo {
@@ -11,15 +8,16 @@ public class Todo {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
+    @Column(nullable = false)
     private String title;
 
+    @Column(nullable = false)
     private String description;
 
+    @Column(nullable = false)
     private boolean isDone;
 
-    public Todo() {
-
-    }
+    public Todo() {}
 
     public Todo(Integer id, String title, String description, boolean isDone) {
         this.id = id;

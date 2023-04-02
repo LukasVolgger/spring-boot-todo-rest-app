@@ -1,9 +1,7 @@
 package at.lukas.volgger.todorestapp.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 
 @Entity
 public class User {
@@ -11,13 +9,14 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
+    @Column(unique = true, nullable = false)
     private String email;
 
+    @JsonIgnore
+    @Column(nullable = false)
     private String password;
 
-    public User() {
-
-    }
+    public User() {}
 
     public User(Integer id, String email, String password) {
         this.id = id;
