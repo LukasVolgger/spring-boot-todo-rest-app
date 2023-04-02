@@ -16,16 +16,19 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    private String apiKey;
+
     @OneToMany
     @JoinColumn(name = "userId")
     Set<Todo> todos;
 
     public User() {}
 
-    public User(Integer id, String email, String password, Set<Todo> todos) {
+    public User(Integer id, String email, String password, String apiKey, Set<Todo> todos) {
         this.id = id;
         this.email = email;
         this.password = password;
+        this.apiKey = apiKey;
         this.todos = todos;
     }
 
@@ -51,6 +54,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getApiKey() {
+        return apiKey;
+    }
+
+    public void setApiKey(String apiKey) {
+        this.apiKey = apiKey;
     }
 
     public Set<Todo> getTodos() {

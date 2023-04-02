@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 public class UserController {
@@ -17,6 +18,8 @@ public class UserController {
 
     @PostMapping("/user/register")
     public ResponseEntity<User> register(@RequestBody User newUser) {
+
+        newUser.setApiKey(UUID.randomUUID().toString());
         User savedUser = userRepository.save(newUser);
 
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
@@ -34,11 +37,14 @@ public class UserController {
     }
 
     @GetMapping("/user/validate")
-    public Boolean validateUser(@RequestParam(name = "email") String email,
-                                       @RequestParam(name = "password") String password) {
-        Optional<User> user = userRepository.findByEmailAndPassword(email, password);
+    public ResponseEntity<String> validate(@RequestParam(name = "email") String email, @RequestParam(name = "password") String password) {
+        Optional<User> validUser = userRepository.findByEmailAndPassword(email, password);
 
-        return user.isPresent();
+        if (validUser.isPresent()) {
+            return new ResponseEntity<>("API Key: " + validUser.get().getApiKey(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Wrong credentials / NO user found!", HttpStatus.NOT_FOUND);
+        }
     }
 
 }
