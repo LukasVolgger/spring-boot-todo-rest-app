@@ -1,14 +1,13 @@
 package at.lukas.volgger.todorestapp.controller;
 
-import at.lukas.volgger.todorestapp.models.Todo;
 import at.lukas.volgger.todorestapp.models.User;
 import at.lukas.volgger.todorestapp.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 public class UserController {
@@ -20,9 +19,18 @@ public class UserController {
     public ResponseEntity<User> register(@RequestBody User newUser) {
         User savedUser = userRepository.save(newUser);
 
-        System.out.println(savedUser);
-
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/user")
+    public ResponseEntity getUser(@RequestParam(name = "id") int id) {
+        Optional<User> user = userRepository.findById(id);
+
+        if (user.isPresent()) {
+            return new ResponseEntity<User>(user.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("User with id " + id + " not found!", HttpStatus.NOT_FOUND);
+        }
     }
 
 }
