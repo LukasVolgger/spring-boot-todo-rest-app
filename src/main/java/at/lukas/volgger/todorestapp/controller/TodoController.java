@@ -1,7 +1,9 @@
 package at.lukas.volgger.todorestapp.controller;
 
 import at.lukas.volgger.todorestapp.models.Todo;
+import at.lukas.volgger.todorestapp.models.User;
 import at.lukas.volgger.todorestapp.repositories.TodoRepository;
+import at.lukas.volgger.todorestapp.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,9 @@ public class TodoController {
     @Autowired
     private TodoRepository todoRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @GetMapping("/todo")
     public ResponseEntity<Todo> getTodo(@RequestParam(value = "id") Integer id) {
         Optional<Todo> todoOptional = todoRepository.findById(id);
@@ -27,10 +32,17 @@ public class TodoController {
     }
 
     @GetMapping("todo/all")
-    public ResponseEntity<Iterable<Todo>> getAllTodo() {
-        Iterable<Todo> allTodo = todoRepository.findAll();
+    public ResponseEntity getAllTodo(@RequestHeader(name = "api-key") String apiKey) {
+        Optional<User> user = userRepository.findByApiKey(apiKey);
 
-        return new ResponseEntity<Iterable<Todo>>(allTodo, HttpStatus.OK);
+        if (user.isPresent()) {
+            Iterable<Todo> allTodo = todoRepository.findAllByUserId(user.get().getId());
+
+            return new ResponseEntity<>(allTodo, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Entered wrong API-Key!", HttpStatus.BAD_REQUEST);
+        }
+
     }
 
     @PostMapping("/todo")
